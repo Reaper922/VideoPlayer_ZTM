@@ -48,12 +48,32 @@ function setProgress(event) {
     const newTime = (event.offsetX / progressRange.offsetWidth);
     progressBar.style.width = `${newTime * 100}%`;
     video.currentTime = newTime * video.duration;
-    console.log(newTime);
 }
 
 
 // Volume Controls --------------------------- //
+function changeVolume(event) {
+    let volume = event.offsetX / volumeRange.offsetWidth;
+    if(volume < 0.1) {
+        volume = 0;
+    }
 
+    if(volume > 0.9) {
+        volume = 1;
+    }
+
+    volumeBar.style.width = `${volume * 100}%`;
+    video.volume = volume;
+
+    volumeIcon.className = '';
+    if(volume >= 0.7) {
+        volumeIcon.classList.add('fas', 'fa-volume-up');
+    } else if(volume < 0.7 && volume > 0) {
+        volumeIcon.classList.add('fas', 'fa-volume-down');
+    } else if(volume === 0) {
+        volumeIcon.classList.add('fas', 'fa-volume-off');
+    }
+}
 
 
 // Change Playback Speed -------------------- //
@@ -69,3 +89,4 @@ video.addEventListener('click', togglePlay);
 video.addEventListener('timeupdate', updateProgress);
 video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
+volumeRange.addEventListener('click', changeVolume);
